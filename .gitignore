@@ -1,0 +1,6 @@
+/output/
+/tmp/
+file_list.txt
+*.mp4
+*.zip
+ffmpeg.exe

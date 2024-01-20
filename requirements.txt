@@ -1,0 +1,4 @@
+aiohttp==3.9.1
+beautifulsoup4==4.12.3
+Requests==2.31.0
+selenium==4.16.0
