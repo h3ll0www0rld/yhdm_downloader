@@ -19,8 +19,10 @@ https://www.iyhdmm.com/
 ```
 直接进行下载，其中`url`为你想下载的番剧的第一集的播放url，`down_num`则为你想下载的集数
 ### 2.使用源代码运行
-clone本项目到本地，cd到文件目录下，输入
+输入
 ```
+git clone https://github.com/h3ll0www0rld/yhdm_downloader.git
+cd yhdm_downloader
 pip install -r requirements.txt
 ```
 同时，您还需要配置`selenium`，本项目使用的是`chromedriver`，请自行进行配置  
