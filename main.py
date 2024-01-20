@@ -7,6 +7,7 @@ import requests
 import aiohttp
 import asyncio
 import shutil
+import time
 
 
 # 下载任务
@@ -60,8 +61,11 @@ def getVideoTitle(bs: BeautifulSoup) -> str:
 # 下载视频文件
 def download_video(browser: webdriver.Chrome, url: str, index: int, cwd: str):
     # 使用selenium获取番剧index.m3u8链接
-    print("正在解析第" + str(index) + "个视频")
+    print("正在下载第" + str(index) + "个视频")
     req = browser.get(url)
+    print("等待网页加载完成")
+    time.sleep(3)
+    print("开始解析")
     bs = BeautifulSoup(browser.page_source, "html.parser")
     class_iframe = bs.find("iframe")
     video_src = BeautifulSoup(str(class_iframe), "html.parser").iframe.attrs["src"]
