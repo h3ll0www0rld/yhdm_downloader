@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.remote.remote_connection import LOGGER
+from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 import sys
 import os
@@ -7,7 +7,6 @@ import requests
 import aiohttp
 import asyncio
 import shutil
-import logging
 
 
 # 下载任务
@@ -80,7 +79,7 @@ def download_video(browser: webdriver.Chrome, url: str, index: int, cwd: str):
         for file in os.listdir(os.path.join(cwd, "tmp")):
             f.write("file " + os.path.join(cwd, "tmp", file).replace("\\", "/") + "\n")
     # 生成ffmpeg运行命令
-    ffmpeg_command = f"{cwd}\\ffmpeg.exe -f concat -safe 0 -i {cwd}\\file_list.txt -c copy {cwd}\\{title}-第{index}集.mp4"
+    ffmpeg_command = f".\\ffmpeg.exe -f concat -safe 0 -i .\\file_list.txt -c copy .\\{title}-第{index}集.mp4"
     os.system(ffmpeg_command.replace("\\", "\\\\"))
     print("转码完成，正在清理临时文件")
     # 清理tmp文件夹及生成的file_list.txt
@@ -96,15 +95,15 @@ if __name__ == "__main__":
     sys_argvs = sys.argv
     # 获取工作目录
     sys_cwd = os.getcwd()
-    # 初始化日志
-    LOGGER.setLevel(logging.WARNING)
     # 初始化浏览器
     browser_options = webdriver.ChromeOptions()
     browser_options.add_argument("--headless")
     browser_options.add_argument("--disable-gpu")
     browser_options.add_experimental_option("excludeSwitches", ["enable-logging"])
     browser_options.add_argument("log-level=3")
-    browser = webdriver.Chrome(options=browser_options)
+    browser = webdriver.Chrome(
+        service=Service("chromedriver.exe"), options=browser_options
+    )
     print("浏览器加载成功")
     # 开始进行下载
     if len(sys_argvs) == 1:  # 如果没有运行参数，进入交互式程序
