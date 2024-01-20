@@ -13,7 +13,7 @@ git clone https://github.com/h3ll0www0rld/yhdm_downloader.git
 cd yhdm_downloader
 pip install -r requirements.txt
 ```
-您需要下载`ffmpeg`，并放在python程序目录下
+您需要下载`ffmpeg`，并放在python程序目录下  
 同时，您还需要配置`selenium`，本项目使用的是`chromedriver`，请自行进行安装并放在python程序目录下  
 在完成上述内容后，运行
 ```
