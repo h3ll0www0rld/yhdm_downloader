@@ -49,8 +49,8 @@ def download_video(browser, url, index, video_templates):
         else:
             logger.error("转码失败，正在清理临时文件")
         # 清理tmp文件夹及生成的file_list.txt
-        # shutil.rmtree(os.path.join(sys_cwd, "tmp"))
-        # os.remove(os.path.join(sys_cwd, "file_list.txt"))
+        shutil.rmtree(os.path.join(sys_cwd, "tmp"))
+        os.remove(os.path.join(sys_cwd, "file_list.txt"))
         # 输出结束
         logger.info("清理完毕")
     else:
