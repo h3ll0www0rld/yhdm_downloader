@@ -1,45 +1,31 @@
-import aiohttp
-import asyncio
+import threading
 import os
 import requests
+from requests.adapters import HTTPAdapter,Retry
 
 
-# 下载任务
-async def job(session: aiohttp.ClientSession, url: str, cwd: str):
-    # 获取文件
-    data = await session.get(url)
-    data_code = await data.read()
-    # 写入
-    filename = os.path.join(cwd, "tmp", os.path.split(url)[-1])
-    try:
-        with open(filename, "wb") as f:
-            f.write(data_code)
-    except FileNotFoundError:
-        pass
+def download_file(url):
+    s = requests.Session()
+    retries = Retry(total=99, backoff_factor=1, status_forcelist=[503])
+    s.mount('https://', HTTPAdapter(max_retries=retries))
+    with s.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(os.path.join(os.getcwd(), "tmp", url.split("/")[-1]), "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
 
 
-# 异步下载
-async def download(loop: aiohttp.ClientSession.loop, urls: str, cwd: str):
-    async with aiohttp.ClientSession() as session:
-        tasks = [loop.create_task(job(session=session, url=_, cwd=cwd)) for _ in urls]
-        finished, unfinished = await asyncio.wait(tasks)
+def multi_thread_download(urls: list):
+    threads = []
+    for i in range(8):
+        for j in range(i, len(urls), 8):
+            url = urls[j]
+            thread = threading.Thread(target=download_file, args=(url,))
+            thread.start()
+            threads.append(thread)
 
+    for thread in threads:
+        thread.join()
 
-# 下载m3u8文件
-def download_m3u8(index_m3u8_url: str, cwd: str):
-    # 生成mixed_m3u8文件位置
-    mixed_m3u8_url = (
-        index_m3u8_url.replace("index.m3u8", "")
-        + requests.get(index_m3u8_url).text.split("\n")[-1]
-    )
-    # 下载mixed_m3u8
-    mixed_m3u8 = requests.get(mixed_m3u8_url).text.split("\n")
-    urls = []
-    # 筛出ts文件地址
-    for ts_url in mixed_m3u8:
-        if "#" not in ts_url:
-            urls.append(mixed_m3u8_url.replace("mixed.m3u8", "") + ts_url)
-    # 调用异步下载函数进行并发下载
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(download(loop=loop, urls=urls, cwd=cwd))
-    loop.close
+        
