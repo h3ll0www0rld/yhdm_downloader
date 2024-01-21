@@ -14,7 +14,6 @@ https://www.iyhdmm.com/
 ```
 git clone https://github.com/h3ll0www0rld/yhdm_downloader.git
 cd yhdm_downloader
-<<<<<<< HEAD
 pdm install
 ```
 运行
