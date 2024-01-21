@@ -6,13 +6,16 @@
 https://www.iyhdmm.com/
 ```
 其余等待验证
+<<<<<<< HEAD
 ## 前置要求
 您需要安装pdm包管理器
+=======
 ## 运行
 输入
 ```
 git clone https://github.com/h3ll0www0rld/yhdm_downloader.git
 cd yhdm_downloader
+<<<<<<< HEAD
 pdm install
 ```
 运行
