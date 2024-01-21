@@ -6,7 +6,6 @@
 https://www.iyhdmm.com/
 ```
 其余等待验证
-<<<<<<< HEAD
 ## 前置要求
 您需要安装pdm包管理器
 ## 运行
