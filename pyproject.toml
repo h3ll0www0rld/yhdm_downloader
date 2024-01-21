@@ -1,0 +1,27 @@
+[project]
+name = "yhdm_downloader"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "h3ll0www0rld", email = "zhuoyicheng2008@163.com"},
+]
+dependencies = [
+    "aiohttp>=3.9.1",
+    "multidict>=6.0.4",
+    "requests>=2.31.0",
+    "selenium>=4.16.0",
+    "bs4>=0.0.2",
+    "ffmpeg-python>=0.2.0",
+    "rich>=13.7.0",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = true
+
+
+[tool.pdm.scripts]
+start = "python ./src/yhdm_downloader/main.py"
